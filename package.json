@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "json-server --watch db.json"
+    "start": "ts-node src/index.ts"
   },
   "repository": {
     "type": "git",
@@ -16,5 +15,18 @@
   "bugs": {
     "url": "https://github.com/Altynai18/chatt/issues"
   },
-  "homepage": "https://github.com/Altynai18/chatt#readme"
+  "homepage": "https://github.com/Altynai18/chatt#readme",
+  "dependencies": {
+    "@types/express": "^4.17.11",
+    "@types/node": "^14.14.41",
+    "@types/validator": "^13.1.3",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^5.12.5",
+    "socket.io": "^4.0.1",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.4",
+    "validator": "^13.6.0"
+  }
 }
