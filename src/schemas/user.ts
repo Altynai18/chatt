@@ -1,5 +1,15 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 import isEmail from "validator";
+
+export interface Iuser extends Document{
+   email: String;
+   fullname: String;
+   password: String;
+   confirmed: Boolean;
+   avatar: String;
+   confirm_hash: String;
+   last_seen: Date;
+}
 
 const UserSchema = new Schema(
   {
@@ -26,6 +36,6 @@ const UserSchema = new Schema(
   last_seen: Date,
 }, {timestamps: true});
 
-const User = mongoose.model('User', UserSchema);
+const UserModel = mongoose.model<IUser>('User', UserSchema);
 
-export default User;
+export default UserModel;

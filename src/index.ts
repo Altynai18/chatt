@@ -2,23 +2,20 @@ import mongoose from 'mongoose';
 import express from 'express';
 import bodyParser from "body-parser";
 
-import User from './schemas/user'
+import {UserModel} from './schemas';
+import {UserController} from './controllers';
+
 const app = express()
+app.use( bodyParser.json());
 const port = 3000
 
-mongoose.connect('mongodb://localhost:27017/chat', {useNewUrlParser: true, useUnifiedTopology: true});
+const User =new UserController();
 
-app.post('/create', (req: any, res: any) => {
-  const postData ={
-    email:req.body.email,
-    fullname:req.body.email,
-    password:req.body.email,
-  }
-  res.send();
-  const user= new User(postData);
-  user.save().then((obj: any) => {
-  res.json(obj);})
-})
+mongoose.connect('mongodb://localhost:27017/chat', {useNewUrlParser: true, useCreateIndex: true, useFindAndModify: true});
+
+app.get('/:id', User.show);
+app.delete("/user/:id", User.delete);
+app.post('/registration', User.create);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
