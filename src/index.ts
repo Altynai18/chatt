@@ -1,25 +1,38 @@
 import mongoose from 'mongoose';
 import express from 'express';
-import bodyParser from "body-parser";
 
-import User from './schemas/user'
-const app = express()
+import { UserController, DialogController, MessageController } from './controllers';
+
+const bodyParser = require('body-parser')
+
+const app = express();
+app.use(bodyParser.json());
 const port = 3000
 
-mongoose.connect('mongodb://localhost:27017/chat', {useNewUrlParser: true, useUnifiedTopology: true});
+const User = new UserController();
+const Dialog = new DialogController();
+const Messages = new MessageController();
 
-app.post('/create', (req: any, res: any) => {
-  const postData ={
-    email:req.body.email,
-    fullname:req.body.email,
-    password:req.body.email,
-  }
-  res.send();
-  const user= new User(postData);
-  user.save().then((obj: any) => {
-  res.json(obj);})
-})
+mongoose.connect('mongodb://localhost:27017/chat', 
+{
+  useNewUrlParser: true, 
+  useUnifiedTopology: true, 
+  useCreateIndex: true, 
+  useFindAndModify: true
+});
 
-app.listen(port, () => {
+app.get('/user/:id', User.show);
+app.delete('/user/:id', User.delete);
+app.post('/user/create', User.create);
+
+app.get('/dialogs', Dialog.index);
+app.delete('/dialogs/:id', Dialog.delete);
+app.post('/dialogs', Dialog.create);
+
+app.get('/messages', Messages.index);
+app.delete('/messages/:id', Messages.delete);
+app.post('/messages', Messages.create);
+
+app.listen(port, function() {
   console.log(`Example app listening at http://localhost:${port}`)
-})
+});
