@@ -1,38 +1,22 @@
-import mongoose from 'mongoose';
 import express from 'express';
+import dotenv from 'dotenv';
+import { createServer } from "http";
 
-import { UserController, DialogController, MessageController } from './controllers';
-
-const bodyParser = require('body-parser')
+import "./core/db";
+import createRoutes from "./core/routes";
+import createSocket from "./core/socket";
 
 const app = express();
-app.use(bodyParser.json());
-const port = 3000
 
-const User = new UserController();
-const Dialog = new DialogController();
-const Messages = new MessageController();
+const http = createServer(app);
+const io = createSocket(http);
 
-mongoose.connect('mongodb://localhost:27017/chat', 
-{
-  useNewUrlParser: true, 
-  useUnifiedTopology: true, 
-  useCreateIndex: true, 
-  useFindAndModify: true
-});
+dotenv.config();
 
-app.get('/user/:id', User.show);
-app.delete('/user/:id', User.delete);
-app.post('/user/create', User.create);
+createRoutes(app, io);
 
-app.get('/dialogs', Dialog.index);
-app.delete('/dialogs/:id', Dialog.delete);
-app.post('/dialogs', Dialog.create);
+const PORT: number = process.env.PORT ? Number(process.env.PORT) : 3003;
 
-app.get('/messages', Messages.index);
-app.delete('/messages/:id', Messages.delete);
-app.post('/messages', Messages.create);
-
-app.listen(port, function() {
-  console.log(`Example app listening at http://localhost:${port}`)
+http.listen(PORT, function() {
+  console.log(`Example app listening at http://localhost:${PORT}`)
 });
