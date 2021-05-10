@@ -14,6 +14,7 @@ class UserController {
     }
 
     show = (req: express.Request, res: express.Response) => {
+
         const id: string = req.params.id;
         UserModel.findById(id, (err: any, user: any) => {
             if(err){
