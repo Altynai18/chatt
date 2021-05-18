@@ -4,14 +4,15 @@ import { UserModel } from '../models';
 
 export default (req: any, _: express.Response, next: express.NextFunction) => {
     
-      UserModel.findOneAndUpdate(
-        
-        { _id: "6090eb9527d66226440efd00" },
-        {
-          last_seen: new Date(),
-        },
-        { new: true },
-        ()=>{}
-      );
+  if (req.user) {
+    UserModel.findOneAndUpdate(
+      { _id: req.user._id },
+      {
+        last_seen: new Date()
+      },
+      { new: true },
+      () => {}
+    );
+  }
     next();
   };
